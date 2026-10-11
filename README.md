@@ -217,16 +217,16 @@ pnpm install
 # Run TypeScript compilation
 pnpm run build
 
-# Run linter (oxlint wrapped with run-minimal)
+# Run linter (oxlint)
 pnpm run lint
 
 # Format code with oxfmt
 pnpm run format
 
-# Check formatting (oxfmt wrapped with run-minimal)
+# Check formatting (oxfmt)
 pnpm run format:check
 
-# Run unit tests (vitest wrapped with run-minimal)
+# Run unit tests (vitest)
 pnpm run test
 
 # Run tests and verify 100% test coverage

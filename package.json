@@ -41,13 +41,12 @@
     }
   },
   "scripts": {
-    "build": "tsc && chmod +x dist/cli.js && node -e \"import('node:fs').then(fs => { try { fs.mkdirSync('node_modules/.bin', { recursive: true }); fs.symlinkSync('../../dist/cli.js', 'node_modules/.bin/run-minimal'); } catch {} })\"",
-    "prepare": "pnpm run build",
-    "lint": "run-minimal oxlint",
+    "build": "tsc",
+    "lint": "oxlint",
     "format": "oxfmt .",
-    "format:check": "run-minimal oxfmt --check .",
-    "test": "run-minimal vitest run",
-    "test:coverage": "run-minimal vitest run --coverage",
+    "format:check": "oxfmt --check .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "changeset": "changeset",
     "changeset:create": "changeset",
