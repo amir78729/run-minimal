@@ -23,9 +23,7 @@ describe("runCommand", () => {
   });
 
   it("captures stderr output and non-zero exit code", async () => {
-    const result = await runCommand(
-      "node -e \"console.error('failed task'); process.exit(3);\"",
-    );
+    const result = await runCommand("node -e \"console.error('failed task'); process.exit(3);\"");
     expect(result.code).toBe(3);
     expect(result.output.trim()).toBe("failed task");
   });
@@ -113,26 +111,21 @@ describe("runMinimal", () => {
   });
 
   it("throws error when command is empty", async () => {
-    await expect(runMinimal([])).rejects.toThrow(
-      "A command is required. Use --help for usage.",
-    );
+    await expect(runMinimal([])).rejects.toThrow("A command is required. Use --help for usage.");
   });
 
   it("runs a successful command and prints summary to stdout", async () => {
     let stdoutOutput = "";
     let stderrOutput = "";
 
-    const result = await runMinimal(
-      ["--no-color", "node -e \"console.log('done')\""],
-      {
-        stdout: (msg) => {
-          stdoutOutput += msg;
-        },
-        stderr: (msg) => {
-          stderrOutput += msg;
-        },
+    const result = await runMinimal(["--no-color", "node -e \"console.log('done')\""], {
+      stdout: (msg) => {
+        stdoutOutput += msg;
       },
-    );
+      stderr: (msg) => {
+        stderrOutput += msg;
+      },
+    });
 
     expect(result.exitCode).toBe(0);
     expect(result.success).toBe(true);
@@ -141,14 +134,9 @@ describe("runMinimal", () => {
   });
 
   it("runs a successful command with default stdout stream", async () => {
-    const stdoutSpy = vi
-      .spyOn(process.stdout, "write")
-      .mockImplementation(() => true);
+    const stdoutSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
 
-    const result = await runMinimal([
-      "--no-color",
-      "node -e \"process.exit(0)\"",
-    ]);
+    const result = await runMinimal(["--no-color", 'node -e "process.exit(0)"']);
 
     expect(result.exitCode).toBe(0);
     expect(stdoutSpy).toHaveBeenCalled();
@@ -230,17 +218,14 @@ describe("runMinimal", () => {
   it("handles failing command that outputs nothing", async () => {
     let stderrOutput = "";
 
-    const result = await runMinimal(
-      ["--no-color", "node -e \"process.exit(1);\""],
-      {
-        stderr: (msg) => {
-          stderrOutput += msg;
-        },
+    const result = await runMinimal(["--no-color", 'node -e "process.exit(1);"'], {
+      stderr: (msg) => {
+        stderrOutput += msg;
       },
-    );
+    });
 
     expect(result.exitCode).toBe(1);
-    expect(stderrOutput).toContain("✗ node -e \"process.exit(1);\" failed");
+    expect(stderrOutput).toContain('✗ node -e "process.exit(1);" failed');
   });
 
   it("handles command spawn failure", async () => {
@@ -289,16 +274,12 @@ describe("runMinimal", () => {
 
 describe("runCli", () => {
   it("returns 0 on successful command", async () => {
-    const code = await runCli(["node -e \"process.exit(0)\""]);
+    const code = await runCli(['node -e "process.exit(0)"']);
     expect(code).toBe(0);
   });
 
   it("returns command exit code on failure", async () => {
-    const code = await runCli([
-      "--exit-code",
-      "preserve",
-      "node -e \"process.exit(7)\"",
-    ]);
+    const code = await runCli(["--exit-code", "preserve", 'node -e "process.exit(7)"']);
     expect(code).toBe(7);
   });
 
@@ -318,9 +299,7 @@ describe("runCli", () => {
     const originalArgv = process.argv;
     process.argv = ["node", "run-minimal", "--help"];
 
-    const stdoutSpy = vi
-      .spyOn(process.stdout, "write")
-      .mockImplementation(() => true);
+    const stdoutSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
 
     const code = await runCli();
     expect(code).toBe(0);
@@ -330,9 +309,7 @@ describe("runCli", () => {
   });
 
   it("handles non-Error thrown exceptions in runCli with default stderr", async () => {
-    const stderrSpy = vi
-      .spyOn(process.stderr, "write")
-      .mockImplementation(() => true);
+    const stderrSpy = vi.spyOn(process.stderr, "write").mockImplementation(() => true);
 
     // Call runCli with empty arguments (which triggers Error("A command is required..."))
     const code = await runCli([]);
@@ -342,16 +319,13 @@ describe("runCli", () => {
   });
 
   it("handles non-Error thrown values", async () => {
-    const mockChild = createMockChild();
-    const mockSpawn = vi.fn().mockReturnValue(mockChild);
-
-    // Pass invalid args that cause throw of a non-error
+    // Pass invalid args that cause throw of an error
     let stderrOutput = "";
     const code = await runCli(
       [
         "--max-output",
         "-5", // invalid maxOutput throws Error, which we test, now let's test a non-Error throw
-        "node -e \"\"",
+        'node -e ""',
       ],
       {
         stderr: (msg) => {

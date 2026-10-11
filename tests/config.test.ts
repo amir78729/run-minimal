@@ -59,15 +59,9 @@ describe("parseExitCode", () => {
   });
 
   it("throws for invalid exit-code modes", () => {
-    expect(() => parseExitCode("invalid")).toThrow(
-      '--exit-code must be "preserve" or "generic".',
-    );
-    expect(() => parseExitCode(123)).toThrow(
-      '--exit-code must be "preserve" or "generic".',
-    );
-    expect(() => parseExitCode(null)).toThrow(
-      '--exit-code must be "preserve" or "generic".',
-    );
+    expect(() => parseExitCode("invalid")).toThrow('--exit-code must be "preserve" or "generic".');
+    expect(() => parseExitCode(123)).toThrow('--exit-code must be "preserve" or "generic".');
+    expect(() => parseExitCode(null)).toThrow('--exit-code must be "preserve" or "generic".');
   });
 });
 
@@ -88,11 +82,7 @@ describe("readConfig", () => {
   });
 
   it("returns default config when package.json has no run-minimal key", async () => {
-    await writeFile(
-      join(tempDir, "package.json"),
-      JSON.stringify({ name: "my-app" }),
-      "utf8",
-    );
+    await writeFile(join(tempDir, "package.json"), JSON.stringify({ name: "my-app" }), "utf8");
     const config = await readConfig(tempDir);
     expect(config).toEqual(DEFAULTS);
   });
@@ -129,11 +119,7 @@ describe("readConfig", () => {
       '"run-minimal" in package.json must be an object.',
     );
 
-    await writeFile(
-      join(tempDir, "package.json"),
-      JSON.stringify({ "run-minimal": null }),
-      "utf8",
-    );
+    await writeFile(join(tempDir, "package.json"), JSON.stringify({ "run-minimal": null }), "utf8");
     await expect(readConfig(tempDir)).rejects.toThrow(
       '"run-minimal" in package.json must be an object.',
     );
@@ -204,18 +190,12 @@ describe("parseArgs", () => {
   });
 
   it("throws if max-output is missing an argument", () => {
-    expect(() => parseArgs(["--max-output"])).toThrow(
-      "--max-output requires a character count.",
-    );
+    expect(() => parseArgs(["--max-output"])).toThrow("--max-output requires a character count.");
   });
 
   it("parses exit-code option", () => {
-    expect(parseArgs(["--exit-code", "preserve", "cmd"]).options.exitCode).toBe(
-      "preserve",
-    );
-    expect(parseArgs(["--exit-code", "generic", "cmd"]).options.exitCode).toBe(
-      "generic",
-    );
+    expect(parseArgs(["--exit-code", "preserve", "cmd"]).options.exitCode).toBe("preserve");
+    expect(parseArgs(["--exit-code", "generic", "cmd"]).options.exitCode).toBe("generic");
   });
 
   it("throws if exit-code is missing an argument", () => {

@@ -5,13 +5,9 @@ describe("cli entry point", () => {
     const originalArgv = process.argv;
     process.argv = ["node", "run-minimal", "--version"];
 
-    const exitSpy = vi
-      .spyOn(process, "exit")
-      .mockImplementation((() => {}) as any);
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation((() => {}) as any);
 
-    const stdoutSpy = vi
-      .spyOn(process.stdout, "write")
-      .mockImplementation(() => true);
+    const stdoutSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
 
     await import("../src/cli.js");
 

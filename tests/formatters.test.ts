@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  formatDuration,
-  formatOutput,
-  tailOutput,
-} from "../src/formatters.js";
+import { formatDuration, formatOutput, tailOutput } from "../src/formatters.js";
 import type { Config } from "../src/types.js";
 
 describe("formatDuration", () => {

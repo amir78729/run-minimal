@@ -2,14 +2,26 @@
   "name": "run-minimal",
   "version": "1.0.0",
   "description": "Minimize successful command output to reduce AI agent token consumption for linting, formatting, and tests.",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
+  "keywords": [
+    "agent",
+    "ai",
+    "cli",
+    "lint",
+    "minimal-output",
+    "output-filter",
+    "test",
+    "token-reduction",
+    "tokens"
+  ],
+  "homepage": "https://github.com/amir78729/run-minimal#readme",
+  "bugs": {
+    "url": "https://github.com/amir78729/run-minimal/issues"
+  },
+  "license": "MIT",
+  "author": "Amirhossein Alibakhshi <amirhosseinalibakhshi@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amir78729/run-minimal.git"
   },
   "bin": {
     "run-minimal": "./dist/cli.js"
@@ -19,39 +31,38 @@
     "README.md",
     "LICENSE"
   ],
-  "author": "Amirhossein Alibakhshi <amirhosseinalibakhshi@gmail.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/amir78729/run-minimal.git"
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
-  "bugs": {
-    "url": "https://github.com/amir78729/run-minimal/issues"
-  },
-  "homepage": "https://github.com/amir78729/run-minimal#readme",
-  "keywords": [
-    "ai",
-    "agent",
-    "tokens",
-    "minimal-output",
-    "cli",
-    "lint",
-    "test",
-    "token-reduction",
-    "output-filter"
-  ],
   "scripts": {
-    "build": "tsc",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "build": "tsc && chmod +x dist/cli.js && node -e \"import('node:fs').then(fs => { try { fs.mkdirSync('node_modules/.bin', { recursive: true }); fs.symlinkSync('../../dist/cli.js', 'node_modules/.bin/run-minimal'); } catch {} })\"",
+    "prepare": "pnpm run build",
+    "lint": "run-minimal oxlint",
+    "format": "oxfmt .",
+    "format:check": "run-minimal oxfmt --check .",
+    "test": "run-minimal vitest run",
+    "test:coverage": "run-minimal vitest run --coverage",
     "test:watch": "vitest",
     "changeset": "changeset",
+    "changeset:create": "changeset",
+    "changeset:check": "changeset status",
+    "changeset:empty": "changeset --empty",
+    "changeset:version": "changeset version",
+    "changeset:release": "pnpm run build && changeset publish",
     "prepublishOnly": "pnpm run build && pnpm run test:coverage"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
     "@types/node": "^26.6.5",
     "@vitest/coverage-v8": "^5.0.3",
+    "oxfmt": "^0.72.0",
+    "oxlint": "^1.87.0",
     "typescript": "^7.0.2",
     "vitest": "^5.0.3"
   }

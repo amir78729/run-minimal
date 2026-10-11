@@ -5,13 +5,7 @@
 
 export { VERSION, DEFAULTS, HELP } from "./constants.js";
 export { formatDuration, formatOutput, tailOutput } from "./formatters.js";
-export {
-  parseBoolean,
-  parseMaxOutput,
-  parseExitCode,
-  parseArgs,
-  readConfig,
-} from "./config.js";
+export { parseBoolean, parseMaxOutput, parseExitCode, parseArgs, readConfig } from "./config.js";
 export { runCommand, runMinimal, runCli } from "./runner.js";
 export type {
   ExitCodeMode,

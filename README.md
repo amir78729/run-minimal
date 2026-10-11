@@ -13,11 +13,13 @@
 When building software with AI coding agents (such as Claude, Codex, Cursor, Antigravity, or Copilot), running verification commands like `npm test`, `eslint .`, `prettier --check .`, or `tsc` frequently dumps hundreds or thousands of lines of output into the terminal.
 
 Even when the command passes completely:
+
 - Passing test summaries and checkmarks flood the agent's context window.
 - Token consumption skyrockets, exhausting context windows and driving up LLM inference costs.
 - Valuable context needed for code generation and reasoning is crowded out.
 
 **`run-minimal` solves this:**
+
 - **On success:** Suppresses all stdout/stderr and prints a single concise summary line:
   ```bash
   ✓ vitest run passed (1.24s)
@@ -96,17 +98,17 @@ Add `run-minimal` to your project's npm scripts so AI agents running them produc
 
 ## ⚙️ CLI Options
 
-| Option | Description | Default |
-|---|---|---|
-| `--color` | Enable ANSI colored output (`✓` green, `✗` red) | `true` |
-| `--no-color` | Disable ANSI color codes | `false` |
-| `--duration` | Show execution duration in milliseconds/seconds | `true` |
-| `--no-duration` | Hide execution duration | `false` |
-| `--max-output <chars>` | Keep only the last `N` failure characters (`0` = unlimited) | `0` |
-| `--exit-code <mode>` | Strategy for exit codes: `"preserve"` or `"generic"` | `"preserve"` |
-| `--help` | Show help and usage instructions | — |
-| `--version` | Display current package version | — |
-| `--` | Stop option parsing; all subsequent items are commands | — |
+| Option                 | Description                                                 | Default      |
+| ---------------------- | ----------------------------------------------------------- | ------------ |
+| `--color`              | Enable ANSI colored output (`✓` green, `✗` red)             | `true`       |
+| `--no-color`           | Disable ANSI color codes                                    | `false`      |
+| `--duration`           | Show execution duration in milliseconds/seconds             | `true`       |
+| `--no-duration`        | Hide execution duration                                     | `false`      |
+| `--max-output <chars>` | Keep only the last `N` failure characters (`0` = unlimited) | `0`          |
+| `--exit-code <mode>`   | Strategy for exit codes: `"preserve"` or `"generic"`        | `"preserve"` |
+| `--help`               | Show help and usage instructions                            | —            |
+| `--version`            | Display current package version                             | —            |
+| `--`                   | Stop option parsing; all subsequent items are commands      | —            |
 
 ### Option Examples
 
@@ -179,27 +181,23 @@ console.log("Duration (ms):", result.duration);
 
 ---
 
-## 🔄 Versioning & Changelog
+## 🔄 Versioning & Release (Changesets & GitHub Actions)
 
-This repository uses [Changesets](https://github.com/changesets/changesets) for semver versioning and changelog management.
+This repository uses [Changesets](https://github.com/changesets/changesets) and GitHub Actions for automated versioning, changelog generation, and npm releases.
 
-### Creating a Changeset
+### Available Scripts
 
-When submitting a change or new feature, create a changeset:
+- `pnpm changeset:create` (or `pnpm changeset`): Interactively create a new changeset file.
+- `pnpm changeset:check`: Verify whether changed packages have an associated changeset.
+- `pnpm changeset:empty`: Create an empty changeset for changes that don't need a version bump.
+- `pnpm changeset:version`: Consume changesets, update `package.json` versions, and update `CHANGELOG.md`.
+- `pnpm changeset:release`: Build the package and publish it to the npm registry.
 
-```bash
-pnpm changeset
-```
+### Automated Release Workflow
 
-Follow the prompts to select whether your update is `patch`, `minor`, or `major`, and provide a summary of the change.
-
-### Applying Version Bumps
-
-```bash
-pnpm changeset version
-```
-
-This updates `package.json` versions and generates `CHANGELOG.md`.
+1. **Pull Requests:** When branches are opened against `main`, the [CI workflow](.github/workflows/ci.yml) validates TypeScript builds, runs `oxfmt` formatting checks, runs `oxlint` linting, enforces 100% test coverage with `vitest`, and verifies changeset status.
+2. **Version PR:** When a branch containing changesets is merged into `main`, the [Release workflow](.github/workflows/release.yml) automatically opens or updates a **"chore: version packages"** Release Pull Request.
+3. **NPM Release:** Merging the Release PR into `main` automatically triggers the npm publish job, publishing the new version to the npm registry.
 
 ---
 
@@ -216,14 +214,23 @@ This updates `package.json` versions and generates `CHANGELOG.md`.
 # Install dependencies
 pnpm install
 
-# Run TypeScript build
-pnpm build
+# Run TypeScript compilation
+pnpm run build
 
-# Run unit tests
-pnpm test
+# Run linter (oxlint wrapped with run-minimal)
+pnpm run lint
 
-# Run tests with 100% coverage report
-pnpm test:coverage
+# Format code with oxfmt
+pnpm run format
+
+# Check formatting (oxfmt wrapped with run-minimal)
+pnpm run format:check
+
+# Run unit tests (vitest wrapped with run-minimal)
+pnpm run test
+
+# Run tests and verify 100% test coverage
+pnpm run test:coverage
 ```
 
 This package maintains **100% test coverage** across all statements, branches, functions, and lines.

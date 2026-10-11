@@ -25,10 +25,7 @@ import type {
  * console.log(code, output);
  * ```
  */
-export function runCommand(
-  command: string,
-  options?: RunCommandOptions,
-): Promise<CommandResult> {
+export function runCommand(command: string, options?: RunCommandOptions): Promise<CommandResult> {
   return new Promise((resolve, reject) => {
     const spawnFn = options?.spawn ?? spawn;
     const child = spawnFn(command, {
@@ -87,10 +84,8 @@ export async function runMinimal(
   args: string[],
   options: RunMinimalOptions = {},
 ): Promise<RunMinimalResult> {
-  const stdout =
-    options.stdout ?? ((msg: string) => process.stdout.write(msg));
-  const stderr =
-    options.stderr ?? ((msg: string) => process.stderr.write(msg));
+  const stdout = options.stdout ?? ((msg: string) => process.stdout.write(msg));
+  const stderr = options.stderr ?? ((msg: string) => process.stderr.write(msg));
 
   const parsed = parseArgs(args);
 
@@ -167,11 +162,7 @@ export async function runMinimal(
     }
   }
 
-  const finalExitCode = success
-    ? 0
-    : config.exitCode === "preserve"
-      ? commandResult.code
-      : 1;
+  const finalExitCode = success ? 0 : config.exitCode === "preserve" ? commandResult.code : 1;
 
   return {
     exitCode: finalExitCode,
@@ -200,18 +191,13 @@ export async function runCli(
   args: string[] = process.argv.slice(2),
   options: RunMinimalOptions = {},
 ): Promise<number> {
-  const stderr =
-    options.stderr ?? ((msg: string) => process.stderr.write(msg));
+  const stderr = options.stderr ?? ((msg: string) => process.stderr.write(msg));
 
   try {
     const result = await runMinimal(args, options);
     return result.exitCode;
   } catch (error) {
-    stderr(
-      `run-minimal: ${
-        error instanceof Error ? error.message : String(error)
-      }\n`,
-    );
+    stderr(`run-minimal: ${error instanceof Error ? error.message : String(error)}\n`);
     return 1;
   }
 }
