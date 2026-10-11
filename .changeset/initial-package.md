@@ -2,4 +2,4 @@
 "run-minimal": minor
 ---
 
-initializing package
+Initialize package
