@@ -1,0 +1,58 @@
+{
+  "name": "run-minimal",
+  "version": "1.0.0",
+  "description": "Minimize successful command output to reduce AI agent token consumption for linting, formatting, and tests.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "run-minimal": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": "Amirhossein Alibakhshi <amirhosseinalibakhshi@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amir78729/run-minimal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amir78729/run-minimal/issues"
+  },
+  "homepage": "https://github.com/amir78729/run-minimal#readme",
+  "keywords": [
+    "ai",
+    "agent",
+    "tokens",
+    "minimal-output",
+    "cli",
+    "lint",
+    "test",
+    "token-reduction",
+    "output-filter"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "changeset": "changeset",
+    "prepublishOnly": "pnpm run build && pnpm run test:coverage"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3",
+    "@types/node": "^26.6.5",
+    "@vitest/coverage-v8": "^5.0.3",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
